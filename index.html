@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation HTML - Suite Fibonacci</title>
+
+    <script src='./suite-utils.js'></script>
+</head>
+<body>
+    <canvas width="500px" height="500px">
+
+    </canvas>
+    <style>
+        canvas {
+            rotate: 180deg;
+            transform: scaleX(-1);
+        }
+    </style>
+</body>
+
+<script>
+    let fibo0 = 1
+    let fibo1 = 1
+    let fibo = new RecurrenceSuite([fibo0,fibo1], (x, y) => x+y)
+    let sd = new SuiteDrawer(fibo, DEFAULT_MODIFIERS.ACT_WITH_LAST_MAPPER)
+
+    function start(sc=1) {
+        const cnv_el = document.querySelector("canvas")
+        const canvas = new SuiteCanvas(cnv_el, [500, 500], [250, 250], [50 / sc,50 / sc])
+
+        canvas.drawQuad("#222222", "#ffffff", 2, 1)
+
+        sd.draw(canvas, "#c7a5b3", 25)
+    }
+
+    let max_dist = Math.max(Math.abs(fibo0), Math.abs(fibo1))
+    let tick_done = 60 * (max_dist / 2)
+    function tick() {
+        tick_done += 1
+
+        start(sc=tick_done / 60)
+    }
+
+    setInterval(tick, 1 / 60)
+</script>
+</html>
